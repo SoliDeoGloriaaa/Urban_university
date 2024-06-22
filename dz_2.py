@@ -1,5 +1,5 @@
 class Vehicle:
-    _COLOR_VARIANTS = ['Зеленый', 'Красный', 'Черный', 'Белый', 'Black']
+    _COLOR_VARIANTS = ['Зеленый', 'Красный', 'Белый', 'Black']
     
     def __init__(self, owner, __modelv, __color, __engine_power) -> None:
         self.owner = owner
@@ -44,13 +44,3 @@ vehicle1.owner = 'Vasyok'
 
 # Проверяем что поменялось
 vehicle1.print_info()
-
-# Модель: Toyota Mark II
-# Мощность двигателя: 500
-# Цвет: blue
-# Владелец: Fedos
-# Невозможно покрасить в Pink
-# Модель: Toyota Mark II
-# Мощность двигателя: 500
-# Цвет: BLACK
-# Владелец: Vasyok
