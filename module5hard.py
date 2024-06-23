@@ -59,8 +59,13 @@ class UrTube:
                 for _ in range(10):
                     print(video.time_now + 1)
                     video.time_now += 1
+<<<<<<< HEAD
                     sleep(1)
                 print("Конец видео.")
+=======
+                    time.sleep(1)
+                print("Конец видео")
+>>>>>>> 788815bbd04fc8d6f00c03e7bbd079282ed82d70
                 video.time_now = 0
         print(f"Видео '{title}' не найдено!")
 
