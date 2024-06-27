@@ -1,5 +1,6 @@
 class Figure:
     sides_count = 0
+
     def __init__(self, __sides, __color, filled) -> None:
         self.__sides = __sides
         self.__color = __color
@@ -26,6 +27,7 @@ class Figure:
 
 class Circle(Figure):
     sides_count = 1
+
     def __init__(self, __sides, __color, filled, __radius) -> None:
         super().__init__(__sides, __color, filled)
         self.__radius = __radius
@@ -34,8 +36,10 @@ class Circle(Figure):
         """Возвращает площать круга."""
         pass
 
+
 class Triangle(Figure):
     sides_count = 3
+
     def __init__(self, __sides, __color, filled, __height) -> None:
         super().__init__(__sides, __color, filled)
         self.__height = __height
@@ -44,8 +48,10 @@ class Triangle(Figure):
         """Возвращает площать треугольника."""
         pass
 
+
 class Cube(Figure):
     sides_count = 12
+
     def __init__(self, __sides) -> None:
         super().__init__(__sides)
 
@@ -54,18 +60,18 @@ class Cube(Figure):
         pass
 
 
-circle1 = Circle((200, 200, 100), 10) # (Цвет, стороны)
+circle1 = Circle((200, 200, 100), 10)  # (Цвет, стороны)
 cube1 = Cube((222, 35, 130), 6)
 
 # Проверка на изменение цветов:
-circle1.set_color(55, 66, 77) # Изменится
-cube1.set_color(300, 70, 15) # Не изменится
+circle1.set_color(55, 66, 77)  # Изменится
+cube1.set_color(300, 70, 15)  # Не изменится
 print(circle1.get_color())
 print(cube1.get_color())
 
 # Проверка на изменение сторон:
-cube1.set_sides(5, 3, 12, 4, 5) # Не изменится
-circle1.set_sides(15) # Изменится
+cube1.set_sides(5, 3, 12, 4, 5)  # Не изменится
+circle1.set_sides(15)  # Изменится
 print(cube1.get_sides())
 print(circle1.get_sides())
 
