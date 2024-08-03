@@ -57,3 +57,13 @@ except IncorrectCarNumbers as exc:
     print(exc.message)
 else:
     print(f'{third.model} успешно создан')
+
+# def recursion(number):
+#     if number == 1:
+#         return True
+#     else:
+#         return (number + recursion(number - 1))
+
+
+# result = recursion(0)
+# print(result)
