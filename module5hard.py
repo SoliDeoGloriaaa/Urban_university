@@ -61,7 +61,7 @@ class UrTube:
                     video.time_now += 1
                     sleep(1)
                 print("Конец видео.")
-                    time.sleep(1)
+                sleep(1)
                 print("Конец видео")
                 video.time_now = 0
         print(f"Видео '{title}' не найдено!")

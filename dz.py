@@ -10,7 +10,7 @@ class Animal:
             self.fed = True
         else:
             print(f'{self.name} не стал есть {food.name}')
-            self.alive = False 
+            self.alive = False
 
 
 class Plant:
@@ -21,7 +21,6 @@ class Plant:
 
 class Mammal(Animal):
     pass
-
 
 
 class Predator(Animal):
