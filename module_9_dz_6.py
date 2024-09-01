@@ -3,5 +3,7 @@ def all_variants(text):
         for j in range(len(text) - i + 1):
             yield text[j:j+i]
 
-for variant in all_variants("abc"):
-    print(variant)
+
+result = all_variants("abc")
+for i in result:
+    print(i)
