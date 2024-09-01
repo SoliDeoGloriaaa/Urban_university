@@ -1,7 +1,7 @@
 class Figure:
     sides_count = 0
 
-    def __init__(self, __sides, __color, filled) -> None:
+    def __init__(self, __sides, __color, filled):
         self.__sides = __sides
         self.__color = __color
         self.filled = filled
@@ -28,7 +28,7 @@ class Figure:
 class Circle(Figure):
     sides_count = 1
 
-    def __init__(self, __sides, __color, filled, __radius) -> None:
+    def __init__(self, __sides, __color, filled, __radius):
         super().__init__(__sides, __color, filled)
         self.__radius = __radius
 
@@ -80,5 +80,3 @@ print(len(circle1))
 
 # Проверка объёма (куба):
 print(cube1.get_volume())
-
-
