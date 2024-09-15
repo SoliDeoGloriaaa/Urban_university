@@ -18,7 +18,7 @@ for file_name in file_list:
     read_info(file_name)
 end = datetime.datetime.now()
 print(f"Линейный подход занял {end - now} секунд")
-# # Линейный подход занял 0:00:07.211002 секунд
+# Линейный подход занял 0:00:07.211002 секунд
 
 if __name__ == '__main__':
     with multiprocessing.Pool(processes=4) as pool:
