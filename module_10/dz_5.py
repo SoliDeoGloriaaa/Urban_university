@@ -9,7 +9,6 @@ def read_info(name):
         while line:
             all_data.append(line)
             line = file.readline()
-    return all_data
 
 
 file_list = ['file_1.txt', 'file_2.txt', 'file_3.txt', 'file_4.txt']
@@ -19,7 +18,7 @@ for file_name in file_list:
     read_info(file_name)
 end = datetime.datetime.now()
 print(f"Линейный подход занял {end - now} секунд")
-# Линейный подход занял 0:00:08.369612 секунд
+# # Линейный подход занял 0:00:07.211002 секунд
 
 if __name__ == '__main__':
     with multiprocessing.Pool(processes=4) as pool:
@@ -27,4 +26,4 @@ if __name__ == '__main__':
         results = pool.map(read_info, file_list)
     end = datetime.datetime.now()
     print(f"Многопроцессный подход занял {end - now} секунд")
-# Многопроцессный подход занял 0:00:19.522156 секунд
+# Многопроцессный подход занял 0:00:03.967868 секунд
