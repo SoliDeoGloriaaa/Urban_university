@@ -12,10 +12,11 @@ class TournamentTest(unittest.TestCase):
         self.usain = Runner("Усэйн", 10)
         self.andrey = Runner("Андрей", 9)
         self.nik = Runner("Ник", 3)
+        print(self.all_results)
 
     @classmethod
     def tearDownClass(cls):
-        pass
+        print(cls.all_results)
 
     @unittest.skipUnless(is_frozen, 'Тесты в этом кейсе заморожены')
     def test_race_usain_and_nik(self):
