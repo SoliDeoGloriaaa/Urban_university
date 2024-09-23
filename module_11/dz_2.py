@@ -3,7 +3,7 @@ import pprint
 
 def introspection_info(obj):
     obj_type = type(obj).__name__
-    attributes = [attr for attr in dir(obj) if not attr.startswith('__')]
+    attributes = [attr for attr in dir(obj) if not attr.startswith('__') and not callable(getattr(obj, attr))]
     methods = [method for method in dir(obj) if callable(getattr(obj, method)) and not method.startswith('__')]
     obj_module = getattr(obj, '__module__', 'builtins' if obj_type in dir(__builtins__) else None)
     result = {
