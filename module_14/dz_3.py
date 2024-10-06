@@ -23,7 +23,8 @@ def create_keyboard():
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     buttons = [
         types.KeyboardButton('Рассчитать'),
-        types.KeyboardButton('Информация')
+        types.KeyboardButton('Информация'),
+        types.KeyboardButton('Купить')
     ]
     keyboard.add(*buttons)
     return keyboard
@@ -43,6 +44,18 @@ def create_inline_keyboard():
     return inline_keyboard
 
 
+def create_product_inline_keyboard():
+    inline_keyboard = types.InlineKeyboardMarkup()
+    products = ['Product1', 'Product2', 'Product3', 'Product4']
+    for product in products:
+        button = types.InlineKeyboardButton(
+            text=product,
+            callback_data='product_buying'
+        )
+        inline_keyboard.add(button)
+    return inline_keyboard
+
+
 @dp.message_handler(commands=['start'])
 async def start(message):
     keyboard = create_keyboard()
@@ -55,6 +68,23 @@ async def start(message):
 async def main_menu(message):
     inline_keyboard = create_inline_keyboard()
     await message.answer("Выберите опцию:", reply_markup=inline_keyboard)
+
+
+@dp.message_handler(text='Купить')
+async def get_buying_list(message):
+    for i in range(1, 5):
+        product_info = f'Название: Product{i} | Описание: описание {i} | Цена: {i * 100}'
+        await bot.send_message(message.chat.id, product_info)
+        with open(f'image/{i}img.jpg', 'rb') as photo:
+            await bot.send_photo(message.chat.id, photo)
+
+    inline_keyboard = create_product_inline_keyboard()
+    await message.answer("Выберите продукт для покупки:", reply_markup=inline_keyboard)
+
+
+@dp.callback_query_handler(lambda call: call.data == 'product_buying')
+async def send_confirm_message(call):
+    await call.message.answer("Вы успешно приобрели продукт!")
 
 
 @dp.callback_query_handler(lambda call: call.data == 'formulas')
@@ -100,7 +130,6 @@ async def send_calories(message, state):
     calories = 10 * weight + 6.25 * growth - 5 * age + 5
     await message.answer(f'Ваша норма калорий: {calories} ккал.')
     await state.finish()
-
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
