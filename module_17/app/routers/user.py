@@ -1,8 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.future import select
-from fastapi import APIRouter, Depends, status, HTTPException
 from backend.db_depends import get_db
-from models import User
+from models import User, Task
 from schemas import CreateUser, UpdateUser
 from typing import Annotated
 
@@ -25,6 +24,7 @@ def user_by_id(user_id: int, db: Annotated[Session, Depends(get_db)]):
     if user is None:
         raise HTTPException(status_code=404, detail="User was not found")
     return user
+
 
 @router.post("/create")
 def create_user(user: CreateUser, db: Annotated[Session, Depends(get_db)]):
@@ -57,6 +57,17 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
     existing_user = db.execute(stmt).scalar_one_or_none()
     if existing_user is None:
         raise HTTPException(status_code=404, detail="User was not found")
+    # Удаляем все задачи, связанные с пользователем
+    db.query(Task).filter(Task.user_id == user_id).delete()
+    # Удаляем пользователя
     db.delete(existing_user)
     db.commit()
     return {"status_code": status.HTTP_204_NO_CONTENT}
+
+
+@router.get("/user/{user_id}/tasks")
+def tasks_by_user_id(user_id: int, db: Session = Depends(get_db)):
+    tasks = db.query(Task).filter(Task.user_id == user_id).all()
+    if tasks is None:
+        raise HTTPException(status_code=404, detail="No tasks found for this user")
+    return tasks
