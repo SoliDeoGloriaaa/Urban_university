@@ -3,7 +3,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.utils import executor
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from dotenv import load_dotenv
-import crud_functions
+from crud_functions import initiate_db, get_all_products
 import os
 
 load_dotenv()
@@ -20,20 +20,12 @@ class UserState(StatesGroup):
     weight = State()
 
 
-class RegistrationState(StatesGroup):
-    username = State()
-    email = State()
-    age = State()
-    balance = State()
-
-
 def create_keyboard():
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     buttons = [
         types.KeyboardButton('Рассчитать'),
         types.KeyboardButton('Информация'),
-        types.KeyboardButton('Купить'),
-        types.KeyboardButton('Регистрация')
+        types.KeyboardButton('Купить')
     ]
     keyboard.add(*buttons)
     return keyboard
@@ -81,7 +73,7 @@ async def main_menu(message):
 
 @dp.message_handler(text='Купить')
 async def get_buying_list(message):
-    products = crud_functions.get_all_products()
+    products = get_all_products()
     if not products:
         await message.answer("Нет доступных продуктов.")
         return
@@ -108,18 +100,10 @@ async def get_formulas(call):
     await call.message.answer(formula_message)
 
 
-@dp.message_handler(state=RegistrationState.age)
-async def set_age(message: types.Message, state):
-    try:
-        age = int(message.text.strip())
-        user_data = await state.get_data()
-        username = user_data['username']
-        email = user_data['email']
-        crud_functions.add_user(username, email, age)
-        await message.answer("Регистрация завершена! Добро пожаловать!")
-        await state.finish()
-    except ValueError:
-        await message.answer("Пожалуйста, введите корректный возраст.")
+@dp.callback_query_handler(lambda call: call.data == 'calories')
+async def set_age(call):
+    await UserState.age.set()
+    await call.message.answer("Введите свой возраст:")
 
 
 @dp.message_handler(state=UserState.age)
@@ -150,32 +134,6 @@ async def send_calories(message, state):
     await message.answer(f'Ваша норма калорий: {calories} ккал.')
     await state.finish()
 
-
-@dp.message_handler(lambda message: message.text == 'Регистрация')
-async def sing_up(message: types.Message):
-    await RegistrationState.username.set()
-    await message.answer("Введите имя пользователя (только латинский алфавит):")
-
-
-@dp.message_handler(state=RegistrationState.username)
-async def set_username(message: types.Message, state):
-    username = message.text.strip()
-    if crud_functions.is_included(username):
-        await message.answer("Пользователь существует, введите другое имя:")
-        return
-
-    await state.update_data(username=username)
-    await RegistrationState.next()
-    await message.answer("Введите свой email:")
-
-
-@dp.message_handler(state=RegistrationState.email)
-async def set_email(message: types.Message, state):
-    email = message.text.strip()
-    await state.update_data(email=email)
-    await RegistrationState.next()
-    await message.answer("Введите свой возраст:")
-
 if __name__ == '__main__':
+    initiate_db()
     executor.start_polling(dp, skip_updates=True)
-
